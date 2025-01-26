@@ -1,0 +1,163 @@
+<p-accordion [multiple]="true">
+    <p-accordionTab header="Generar Orden de Ejecución de Servicio" [selected]="true">
+        <div class="formgrid grid p-fluid">
+            <div class="field col md:col-4  gap-2">
+                <label for="">Empresa</label>
+                <p-dropdown [options]="empresas" optionLabel="nombre" name="" [(ngModel)]="empresa"
+                    placeholder="Seleccione una empresa"></p-dropdown>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Unidad Operativa</label>
+                <p-dropdown [options]="unidadesOperativas" optionLabel="nombre" [(ngModel)]="unidadOperativa"
+                    placeholder="Seleccione unidad operativa"></p-dropdown>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Sede Ejecutora</label>
+                <p-dropdown [options]="sedesEjecutor" optionLabel="nombre" [(ngModel)]="sedeEjecutor"
+                    placeholder="Seleccione ciudad"></p-dropdown>
+            </div>
+            <div class="field col md:col-4 gap-2">
+                <label for="">Cliente</label>
+                <p-dropdown appendTo="body" [options]="clientes" optionLabel="nombre" name=""
+                    [(ngModel)]="selectCliente" placeholder="Nombre"></p-dropdown>
+            </div>
+            <div class="field col md:col-4 gap-2">
+                <label for="">Contractual</label>
+                <p-dropdown appendTo="body" [options]="contractuales" optionLabel="nombre" [(ngModel)]="contractual"
+                    placeholder="Descripcion"></p-dropdown>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Lugar Ejecución</label>
+                <p-dropdown appendTo="body" [options]="lugarEjecuciones" optionLabel="nombre"
+                    [(ngModel)]="lugarEjecucion" placeholder="Direccion"></p-dropdown>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Fecha Ejecución</label>
+                <p-calendar appendTo="body" [(ngModel)]="fechaInicio"></p-calendar>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Fecha Final</label>
+                <p-calendar appendTo="body" [(ngModel)]="FechaFin"></p-calendar>
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <label for="">Descripcion</label>
+                <textarea pInputTextarea [(ngModel)]="descripcion" rows="2" cols="40" pInputTextArea></textarea>
+            </div>
+            <div class="field col md:col-4 gap-2">
+                <label for="">Responsable Tecnico</label>
+                <input type="text" pInputText [(ngModel)]="responsableTecnico">
+            </div>
+            <div class="field col md:col-4 gap-2">
+                <label for="">telefono Contacto</label>
+                <input type="text" pInputText [(ngModel)]="telefonoContacto">
+            </div>
+            <div class="field col md:col-4  gap-2">
+                <p-button label="Guardar" (click)="save()"> </p-button>
+            </div>
+        </div>
+    </p-accordionTab>
+</p-accordion>
+<p-accordion>
+    <p-accordionTab header="Listado de Ordenes de Ejecucion">
+        <p-table [value]="ordenes" [rows]="5" [paginator]="true" [responsive]="true" selectionMode="single">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>nro</th>
+                    <th>CLIENTE</th>
+                    <th>UNIDAD OPERATIVA</th>
+                    <th>SEDE EJECUTORA</th>
+                    <th>CONTRACTUAL</th>
+                    <th>LUGAR EJECUCION</th>
+                    <th>FECHA INICIO</th>
+                    <th>FECHA FIN</th>
+                    <th>DESCRIPCION</th>
+                    <th>RESPONSABLE TECNICO</th>
+                    <th>TELEFONO CONTACTO</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-orden let-i="rowIndex">
+                <tr>
+                    <td>{{i+1}}</td>
+                    <td>{{orden.CLIENTE?.nombre}}</td>
+                    <td>{{orden.UNIDAD_OPERATIVA?.nombre}}</td>
+                    <td>{{orden.SEDE_EJECUTOR?.nombre}}</td>
+                    <td>{{orden.CONTRACTUAL?.nombre}}</td>
+                    <td>{{orden.LUGAR_EJECUCION?.nombre}}</td>
+                    <td>{{orden.fecha_inicio}}</td>
+                    <td>{{orden.fecha_fin}}</td>
+                    <td>{{orden.descripcion}}</td>
+                    <td>{{orden.responsable_tecnico}}</td>
+                    <td>{{orden.telefono_contacto}}</td>
+                    <td class="flex justify-content-center">
+                        <button pButton pRipple type="button" icon="pi pi-trash"
+                            class="p-button-rounded p-button-warning" (click)="delete(orden.id)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-pencil"
+                            class="p-button-rounded p-button-success" (click)="editVisible(orden.id)"></button>
+                        <button (click)="generatePDF(orden)" pButton pRipple type="button" icon="pi pi-file-pdf"
+                            class="p-button-rounded p-button-danger"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-accordionTab>
+</p-accordion>
+
+<p-dialog [(visible)]="visible" [style]="{width: '70vw'}" header="Editar Orden" [modal]="true" [closable]="true">
+    <div class=" formgrid grid">
+        <div class="col md:col-4  field gap-2">
+            <label for="">Empresa</label>
+            <p-dropdown [options]="empresas" optionLabel="nombre" name="id_empresa" [(ngModel)]="empresa"
+                placeholder="Seleccione una empresa"></p-dropdown>
+        </div>
+        <div class=" col md:col-4 field gap-2">
+            <label for="">Unidad Operativa</label>
+            <p-dropdown [options]="unidadesOperativas" optionLabel="nombre" name="id_operativa"
+                [(ngModel)]="unidadOperativa" placeholder="Seleccione unidad operativa"></p-dropdown>
+        </div>
+        <div class=" col md:col-4 field gap-2">
+            <label for="">Sede Ejecutora</label>
+            <p-dropdown [options]="sedesEjecutor" optionLabel="nombre" name="id_sede" [(ngModel)]="sedeEjecutor"
+                placeholder="Seleccione ciudad"></p-dropdown>
+        </div>
+        <div class=" col md:col-4 field gap-2">
+            <label for="">Cliente</label>
+            <p-dropdown appendTo="body" name="id_cliente" [options]="clientes" optionLabel="nombre" name=""
+                [(ngModel)]="selectCliente" placeholder="Nombre"></p-dropdown>
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">Contractual</label>
+            <p-dropdown appendTo="body" name="id_contractual" [options]="contractuales" optionLabel="nombre"
+                [(ngModel)]="contractual" placeholder="Descripcion"></p-dropdown>
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">Lugar Ejecución</label>
+            <p-dropdown appendTo="body" name="id_lugar_ejecucion" [options]="lugarEjecuciones" optionLabel="nombre"
+                [(ngModel)]="lugarEjecucion" placeholder="Direccion"></p-dropdown>
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">Fecha Ejecución</label>
+            <p-calendar appendTo="body" name="fecha_inicio" [(ngModel)]="fechaInicio"></p-calendar>
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">Fecha Final</label>
+            <p-calendar appendTo="body" name="fecha_fin" [(ngModel)]="FechaFin"></p-calendar>
+        </div>
+        <div>
+            <label for="">Descripcion</label>
+            <textarea pInputTextarea name="descripcion" [(ngModel)]="descripcion" rows="2" cols="40"
+                pInputTextArea></textarea>
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">Responsable Tecnico</label>
+            <input type="text" name="responsable_tecnico" pInputText [(ngModel)]="responsableTecnico">
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <label for="">telefono Contacto</label>
+            <input type="text" name="telefono_contacto" pInputText [(ngModel)]="telefonoContacto">
+        </div>
+        <div class="col md:col-4 field gap-2">
+            <p-button label="Guardar" (click)="edit()"> </p-button>
+        </div>
+    </div>
+</p-dialog>

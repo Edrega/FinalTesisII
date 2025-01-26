@@ -1,0 +1,22 @@
+<p-card header="Ejecución de Servicio" [style.maxHeight.em]="50">
+    <p-accordion [multiple]="true">
+        <p-accordionTab header="Generar Orden de Ejecución de Servicio">
+            Generar Orden
+            <p-footer>
+                <a routerLink="/app/orden" class="p-button">Generar</a>
+            </p-footer>
+        </p-accordionTab>
+        <p-accordionTab header="Generar Parte Operativa">
+            Asignar un técnico al servicio
+            <p-footer>
+                <p-button label="Generar"></p-button>
+            </p-footer>
+        </p-accordionTab>
+        <p-accordionTab header="Consulta de Informacion">
+            Ver Ordenes de Ejecución de Servicio, POS
+            <p-footer>
+                <p-button label="Generar"></p-button>
+            </p-footer>
+        </p-accordionTab>
+    </p-accordion>
+</p-card>
