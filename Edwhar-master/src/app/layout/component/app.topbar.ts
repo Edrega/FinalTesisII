@@ -51,7 +51,7 @@ import { AuthService } from '../../pages/auth/service/auth.service';
             <i class="pi pi-bars"></i>
         </button>
         <a class="layout-topbar-logo" routerLink="/">
-            <img src="assets/icono.png" alt="logo" class="w-10 h-10" />
+            <img src="assets/icono.png" alt="logo" class="w-12 h-12" />
         </a>
     </div>
 
